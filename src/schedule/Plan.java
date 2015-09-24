@@ -1,4 +1,4 @@
-package robot;
+package schedule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
