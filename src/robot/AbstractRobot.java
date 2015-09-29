@@ -86,4 +86,8 @@ public class AbstractRobot {
 		return y;
 	}
 
+	public double getHeading() {
+		return heading;
+	}
+
 }
