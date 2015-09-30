@@ -21,7 +21,7 @@ public class SimpleTestKalmanFilterProcessor {
 
 	public SimpleTestKalmanFilterProcessor() {
 
-		kalman = new KalmanFilterProcessor(init[0], init[1] , 0 , 0 , 0.1 );
+		kalman = new KalmanFilterProcessor(init[0], init[1] , 1. , 1. , 1.  , 0.1);
 	}
 
 	public static void main(String[] args) {

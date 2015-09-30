@@ -57,8 +57,13 @@ public class AbstractRobot {
 
 	}
 
+
+	public void move_in_circle(){
+		move(this.turning , this.distance);
+	}
+
 	public static double calculateDistance(double[] point1 , double[] point2){
-		return Math.sqrt(((point2[0] - point1[0])*(point2[0] - point1[0]) + ((point2[1] - point1[1])*(point2[1] - point1[1]))));
+		return Math.sqrt((Math.pow(point2[0] - point1[0], 2) + Math.pow((point2[1] - point1[1]), 2)));
 	}
 
 	private double angle_trunc(double angle){
