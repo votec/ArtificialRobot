@@ -3,7 +3,8 @@ package main;
 import robot.AbstractRobot;
 import robot.RunAwayRobot;
 import schedule.Plan;
-import simulations.RunAwaySimulation;
+import simulations.RunAwaySimulationHunter;
+import simulations.RunAwaySimulationWithoutHunter;
 import world.World;
 
 public class Main {
@@ -15,8 +16,11 @@ public class Main {
 //		System.out.println(plan);
 //		System.out.println("Test");
 
-		new RunAwaySimulation().run();
+//		new RunAwaySimulationWithoutHunter().run();
 
+		RunAwaySimulationHunter simu = new RunAwaySimulationHunter();
+		simu.initSim();
+		simu.run();
 
 	}
 

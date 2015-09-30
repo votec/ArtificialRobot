@@ -66,17 +66,16 @@ public class AbstractRobot {
 		return Math.sqrt((Math.pow(point2[0] - point1[0], 2) + Math.pow((point2[1] - point1[1]), 2)));
 	}
 
-	private double angle_trunc(double angle){
+	protected double angle_trunc(double angle){
 		while (angle < 0.0) {
 			angle += Math.PI * 2;
 		}
 		return ((angle+Math.PI) % (Math.PI * 2 )) - Math.PI;
 	}
 
-	public void sense(){
+	public double[] sense(){
 		// add gaussian measurement noise to location
-		x = new Random().nextGaussian() * measurement_noise + x;
-		y = new Random().nextGaussian() * measurement_noise + y;
+		return new double[]{new Random().nextGaussian() * measurement_noise + x , new Random().nextGaussian() * measurement_noise + y};
 	}
 
 	public double getDistance() {

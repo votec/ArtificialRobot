@@ -4,7 +4,7 @@ import filter.KalmanFilterProcessor;
 import robot.AbstractRobot;
 import robot.RunAwayRobot;
 
-public class RunAwaySimulation {
+public class RunAwaySimulationWithoutHunter {
 
 	private static final int RUNS = 1000;
 
@@ -15,14 +15,14 @@ public class RunAwaySimulation {
 
 		boolean localized = false;
 		int counter = 0;
-		double distance_tolerance = 0.05 * targetRobot.getDistance();
+		double distance_tolerance = 0.1 * targetRobot.getDistance();
 
 		KalmanFilterProcessor filter = new KalmanFilterProcessor(1. , 1. , 0. , 0. , 1. , measurementNoise);
 
 		while (true) {
 
-			targetRobot.sense();
-			double[] nextPos = filter.estimate_next_position(targetRobot.getX() , targetRobot.getY());
+			double[] measurement = targetRobot.sense();
+			double[] nextPos = filter.estimate_next_position(measurement[0],measurement[1]);
 			targetRobot.move_in_circle();
 
 			double error = AbstractRobot.calculateDistance(nextPos, new double[]{targetRobot.getX() , targetRobot.getY()});
