@@ -2,14 +2,19 @@ package simulations;
 
 import filter.KalmanFilterProcessor;
 import robot.AbstractRobot;
-import robot.RunAwayRobot;
+import robot.RunAwayHunterRobot;
 
+/**
+ * Simulation for kalman filter functionality
+ * @author fraenklt
+ *
+ */
 public class RunAwaySimulationWithoutHunter {
 
 	private static final int RUNS = 1000;
 
 	public void run(){
-		AbstractRobot targetRobot = new RunAwayRobot(2.1, 4.3, 0.5, 2 * Math.PI / 34.0, 2);
+		AbstractRobot targetRobot = new RunAwayHunterRobot(2.1, 4.3, 0.5, 2 * Math.PI / 34.0, 2);
 		double measurementNoise = targetRobot.getDistance() * 0.05;
 		targetRobot.setNoise(0.0, 0.0, measurementNoise);
 

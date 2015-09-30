@@ -1,24 +1,28 @@
 package simulations;
 
-import filter.KalmanFilterProcessor;
 import robot.AbstractRobot;
-import robot.RunAwayRobot;
+import robot.RunAwayHunterRobot;
 
+/**
+ * Simulation for kalman filter functionality
+ * @author fraenklt
+ *
+ */
 public class RunAwaySimulationHunter {
 
 	private static final int RUNS = 1000;
-	private RunAwayRobot targetRobot;
+	private RunAwayHunterRobot targetRobot;
 	private double measurementNoise;
-	private RunAwayRobot hunterRobot;
+	private RunAwayHunterRobot hunterRobot;
 
 
 	public void initSim(){
 
-		targetRobot = new RunAwayRobot(0.0, 10.0, 0.5, 2 * Math.PI / 30.0, 1.5);
-		measurementNoise = targetRobot.getDistance() * 0.05;
-		measurementNoise = 0.0;
+		targetRobot = new RunAwayHunterRobot(0.0, 10.0, 0.5, 2 * Math.PI / 30.0, 1.5);
+		measurementNoise = targetRobot.getDistance() * 0.0005;
+
 		targetRobot.setNoise(0.0, 0.0, measurementNoise);
-		hunterRobot = new RunAwayRobot(-10.0, -10.0, 0.5, 2 * Math.PI / 10.0, 1.0);
+		hunterRobot = new RunAwayHunterRobot(-10.0, -10.0, 0.0, 2 * Math.PI / 10.0, 1.0);
 		hunterRobot.setNoise(0.0, 0.0, measurementNoise);
 	}
 
@@ -26,15 +30,15 @@ public class RunAwaySimulationHunter {
 
 		boolean caught = false;
 		int counter = 0;
-		double separation_tolerance = 0.1 * targetRobot.getDistance();
-		double maxDistance = targetRobot.getDistance()*1.94;
+		double separation_tolerance = 0.02 * targetRobot.getDistance();
+		double maxDistance = targetRobot.getDistance()*0.98;
 
 
 		while (true) {
 			counter++;
 			double error = AbstractRobot.calculateDistance(new double[]{hunterRobot.getX() , hunterRobot.getY()}, new double[]{targetRobot.getX() , targetRobot.getY()});
 
-			System.out.println("error -> " + error);
+			System.out.println("estimate Distance -> " + error);
 			if (error <= separation_tolerance) {
 				caught = true;
 			}
@@ -59,7 +63,6 @@ public class RunAwaySimulationHunter {
 				System.out.println("Sorry not caught the target!");
 				break;
 			}
-
 		}
 	}
 }

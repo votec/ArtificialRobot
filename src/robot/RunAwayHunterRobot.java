@@ -2,13 +2,13 @@ package robot;
 
 import filter.KalmanFilterProcessor;
 
-public class RunAwayRobot extends AbstractRobot{
+public class RunAwayHunterRobot extends AbstractRobot{
 
 	private final double tolerance = 0.001;
 	private KalmanFilterProcessor filter;
 
 
-	public RunAwayRobot(double x , double y , double heading , double turning , double distance) {
+	public RunAwayHunterRobot(double x , double y , double heading , double turning , double distance) {
 		super(x,y,heading,turning,distance);
 		filter = new KalmanFilterProcessor(1. , 1. , 1. , 1. , 1. , measurement_noise);
 	}

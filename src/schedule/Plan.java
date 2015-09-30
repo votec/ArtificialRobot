@@ -12,29 +12,27 @@ public class Plan {
 	private int[] goal;
 	private List<int[]> path;
 	private int[][] heuristic;
-	
-	
+
+
 	public Plan(int[][] grid , int[] startPosition , int[] goal) {
-		
+
 		this.grid = grid;
 		this.startPosition= startPosition;
 		this.goal = goal;
 		this.path = new ArrayList<>();
-		
 		this.heuristic = makeHeuristic(grid,goal,cost);
 	}
 
-
 	private int[][] makeHeuristic(int[][] grid, int[] goal, int cost) {
 		int[][] heuristic = new int[grid.length][grid[0].length];
-		
+
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				int sum = Math.abs(i-goal[0]) + Math.abs(j-goal[1]);
 				heuristic[i][j] = sum;
-			}			
-		}		
-		return heuristic;		
+			}
+		}
+		return heuristic;
 	}
 
 
@@ -44,11 +42,10 @@ public class Plan {
 				+ ", goal=" + Arrays.toString(goal) + ", path=" + path + "\n"
 				+ ", heuristic=" + "\n" + arrayToString(heuristic) + ", grid=" + "\n" + arrayToString(grid) +  "]";
 	}
-	
-	
+
 	public static String arrayToString(int[][] a) {
 
-	    String aString;     
+	    String aString;
 	    aString = "";
 	    int column;
 	    int row;
@@ -62,6 +59,4 @@ public class Plan {
 
 	    return aString;
 	}
-	
-	
 }
