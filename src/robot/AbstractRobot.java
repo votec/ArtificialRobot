@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class AbstractRobot {
 
+
+
 	private final double max_turning_angle = Math.PI;
 
 	protected double x;
