@@ -5,7 +5,8 @@ public enum Movement {
 		LEFT (0 , -1 , "<"),
 		RIGHT (0, 1 , ">"),
 		UP (-1 , 0 , "^"),
-		DOWN (1 , 0 ,"v" );
+		DOWN (1 , 0 ,"v" ),
+		NO_MOVE(0,0,"-");
 
 		private int move;
 		private int turn;
