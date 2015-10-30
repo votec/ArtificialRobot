@@ -18,8 +18,6 @@ public class Window extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
-		System.out.println("start");
 		Canvas canvas = new Canvas(500, 400);
         gc = canvas.getGraphicsContext2D();
 

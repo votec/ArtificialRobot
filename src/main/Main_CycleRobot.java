@@ -3,6 +3,7 @@ package main;
 import gui.Window;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,7 +14,7 @@ import world.World;
 
 public class Main_CycleRobot {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
 
 		new Thread() {
 	            @Override
@@ -24,8 +25,6 @@ public class Main_CycleRobot {
 
 
 	    Window window = Window.waitForStartUpTest();
-	    window.printSomething();
-	    System.out.println("GC -> " + window.getContext().getCanvas().getGraphicsContext2D());
 		new PathFindSimulation(window);
 
 	}

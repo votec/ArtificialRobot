@@ -55,4 +55,9 @@ public class DrawGrid {
 		}
 	}
 
+	public void drawRobot(double x, double y) {
+		gc.setFill(Color.RED);
+		gc.fillOval(-1*y*SIZE_CIRCLE + OFFSET_MID, x*SIZE_CIRCLE +OFFSET_MID, 3, 3);
+	}
+
 }
