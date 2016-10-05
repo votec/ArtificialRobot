@@ -1,8 +1,13 @@
 package filter;
 
-import robot.AbstractRobot;
+import java.util.ArrayList;
+import java.util.List;
+import robot.CycleRobot;
 
-public class ParticlesFilter extends AbstractRobot{
+public class ParticlesFilter {
+
+	private final int FILTERSIZE = 100;
+	List<CycleRobot> filter = new ArrayList<CycleRobot>();
 
 	/**
 	 * Implement particles filter.
@@ -15,87 +20,40 @@ public class ParticlesFilter extends AbstractRobot{
 	 */
 	public ParticlesFilter(double x, double y, double heading,
 			double turningNoise, double distanceNoise, double measurementNoise) {
-		super(x, y, heading, turningNoise, distanceNoise);
 
+		for (int i = 0; i < FILTERSIZE; i++) {
+			CycleRobot partical = new CycleRobot(x, y, heading);
+			partical.setNoise(turningNoise, distanceNoise, measurementNoise);
+			filter.add(partical);
+		}
 	}
 
 	public double[] getPosition() {
-		/**
-		 * TODO
-		 */
-		return null;
+		double x = 0.0;
+		double y = 0.0;
+		double heading = 0.0;
+
+		for (CycleRobot particle : filter) {
+			x += particle.getX();
+			y += particle.getY();
+			heading += ((particle.getHeading() - filter.get(0).getHeading() + Math.PI) % (2.0 * Math.PI)) + (filter.get(0).getHeading() -Math.PI);
+		}
+
+		return new double[]{x / FILTERSIZE , y / FILTERSIZE , heading/ FILTERSIZE};
 	}
 
 
 	public void sense(double[] z) {
 
+		for (CycleRobot particle : filter) {
 
-	}
+
+
+		}
 
 	/*
-	class particles:
 
-	    # --------
-	    # init:
-	    #    creates particle set with given initial position
-	    #
-
-	    def __init__(self, x, y, theta,
-	                 steering_noise, distance_noise, measurement_noise, N = 100):
-	        self.N = N
-	        self.steering_noise    = steering_noise
-	        self.distance_noise    = distance_noise
-	        self.measurement_noise = measurement_noise
-
-	        self.data = []
-	        for i in range(self.N):
-	            r = robot()
-	            r.set(x, y, theta)
-	            r.set_noise(steering_noise, distance_noise, measurement_noise)
-	            self.data.append(r)
-
-
-	    # --------
-	    #
-	    # extract position from a particle set
-	    #
-
-	    def get_position(self):
-	        x = 0.0
-	        y = 0.0
-	        orientation = 0.0
-
-	        for i in range(self.N):
-	            x += self.data[i].x
-	            y += self.data[i].y
-	            # orientation is tricky because it is cyclic. By normalizing
-	            # around the first particle we are somewhat more robust to
-	            # the 0=2pi problem
-	            orientation += (((self.data[i].orientation
-	                              - self.data[0].orientation + pi) % (2.0 * pi))
-	                            + self.data[0].orientation - pi)
-	        return [x / self.N, y / self.N, orientation / self.N]
-
-	    # --------
-	    #
-	    # motion of the particles
-	    #
-
-	    def move(self, grid, steer, speed):
-	        newdata = []
-
-	        for i in range(self.N):
-	            r = self.data[i].move(grid, steer, speed)
-	            newdata.append(r)
-	        self.data = newdata
-
-	    # --------
-	    #
-	    # sensing and resampling
-	    #
-
-	    def sense(self, Z):
-	        w = []
+    w = []
 	        for i in range(self.N):
 	            w.append(self.data[i].measurement_prob(Z))
 
@@ -113,8 +71,15 @@ public class ParticlesFilter extends AbstractRobot{
 	            p3.append(self.data[index])
 	        self.data = p3
 
-
-
 	*/
+	}
+
+	public void move(double steer, double speed) {
+
+		for (CycleRobot particle : filter) {
+			particle.move(steer, speed);
+		}
+
+	}
 
 }
