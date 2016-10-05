@@ -15,9 +15,9 @@ import world.World;
 
 public class PathFindSimulation {
 
-	protected static final double turning_noise = 0.0;
-	protected static final double distance_noise = 0.0;
-	protected static final double measurement_noise = 0.0;
+	protected static final double turning_noise = 0.1;
+	protected static final double distance_noise = 0.03;
+	protected static final double measurement_noise = 0.3;
 	protected static final double speed = 0.1;
 	protected static final int timeout = 5000;
 	protected static final double p_gain = 1.8;
@@ -101,7 +101,7 @@ public class PathFindSimulation {
 	    		double diff_cte = -cte;
 
 	    		double[] estimate_position = filter.getPosition();
-	    		if (estimate_position == null) {
+	    		if (estimate_position != null) {
 	    			// take robot position instead of measurement
 					estimate_position = new double[]{r.getX(), r.getY()};
 				}
@@ -142,11 +142,10 @@ public class PathFindSimulation {
 	    		err +=(cte*cte);
 	    		N++;
 
-
 	    		drawing.drawRobot(r.getX(),r.getY());
 
 	    		System.out.println("err: " + err +  "  cte: "+ cte +"  index: "+ index + " u:  " + u + " collisions: " + r.getCollisions());
-	    		Thread.sleep(20);
+	    		Thread.sleep(10);
 			}
 			return 0;
 	    }
@@ -154,6 +153,4 @@ public class PathFindSimulation {
 		};
 		new Thread(simulation).start();
 	}
-
-
 }

@@ -1,5 +1,7 @@
 package robot;
 
+import java.util.Random;
+
 public class CycleRobot extends AbstractRobot{
 
 	private double length = 0.1;
@@ -31,10 +33,14 @@ public class CycleRobot extends AbstractRobot{
 		}
 
 		/**
-		 * apply noise TODO
+		 * apply noise
+		 *
+		 *      steering2 = random.gauss(steering, self.steering_noise)
+				distance2 = random.gauss(distance, self.distance_noise)
 		 */
-		double steering2 = steering;
-		double distance2 = distance;
+
+		double steering2 = steering + turning_noise * new Random().nextGaussian();
+		double distance2 = distance + distance_noise * new Random().nextGaussian();
 
 
 		double turn = Math.tan(steering2) * distance2 / length;
@@ -75,6 +81,18 @@ public class CycleRobot extends AbstractRobot{
 
 	public int getCollisions() {
 		return num_collisions;
+	}
+
+
+	public double measurementProb(double[] measurement){
+
+		double errorX = measurement[0] - x;
+		double errorY = measurement[1] - y;
+
+		double error = Math.exp(-1* (errorX * errorX) / (measurement_noise * measurement_noise) / 2 / Math.sqrt(2.0 * Math.PI * (measurement_noise * measurement_noise)) );
+		error *= Math.exp(-1* (errorY * errorY) / (measurement_noise * measurement_noise) / 2 / Math.sqrt(2.0 * Math.PI * (measurement_noise * measurement_noise)) );
+
+		return error;
 	}
 
 }

@@ -1,7 +1,9 @@
 package filter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 import robot.CycleRobot;
 
 public class ParticlesFilter {
@@ -38,48 +40,40 @@ public class ParticlesFilter {
 			y += particle.getY();
 			heading += ((particle.getHeading() - filter.get(0).getHeading() + Math.PI) % (2.0 * Math.PI)) + (filter.get(0).getHeading() -Math.PI);
 		}
-
 		return new double[]{x / FILTERSIZE , y / FILTERSIZE , heading/ FILTERSIZE};
 	}
 
 
 	public void sense(double[] z) {
 
+		List<Double> errors = new ArrayList<Double>();
+		List<CycleRobot> seedingList = new ArrayList<CycleRobot>();
+
 		for (CycleRobot particle : filter) {
-
-
-
+			double error = particle.measurementProb(z);
+			errors.add(error);
 		}
 
-	/*
+		int index = (int) (Math.random() * FILTERSIZE);
+		double beta = 0.0;
+		double mw = Collections.max(errors);
 
-    w = []
-	        for i in range(self.N):
-	            w.append(self.data[i].measurement_prob(Z))
+		for (int i = 0; i < FILTERSIZE; i++) {
+			beta += (Math.random() * 2.0 * mw);
+			while (beta > errors.get(index)) {
+				beta -= errors.get(index);
+				index = (index + 1) % FILTERSIZE;
+			}
+			seedingList.add(filter.get(index));
+		}
 
-	        # resampling (careful, this is using shallow copy)
-	        p3 = []
-	        index = int(random.random() * self.N)
-	        beta = 0.0
-	        mw = max(w)
-
-	        for i in range(self.N):
-	            beta += random.random() * 2.0 * mw
-	            while beta > w[index]:
-	                beta -= w[index]
-	                index = (index + 1) % self.N
-	            p3.append(self.data[index])
-	        self.data = p3
-
-	*/
+		filter = seedingList;
 	}
 
 	public void move(double steer, double speed) {
-
 		for (CycleRobot particle : filter) {
 			particle.move(steer, speed);
 		}
-
 	}
 
 }
