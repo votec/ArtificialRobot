@@ -1,10 +1,8 @@
 package robot;
 
-
-
 public class CycleRobot extends AbstractRobot{
 
-	private double length = 0.5;
+	private double length = 0.1;
 	private int num_collisions = 0;
 
 	public CycleRobot(double x, double y, double heading, double turning,
@@ -40,9 +38,8 @@ public class CycleRobot extends AbstractRobot{
 
 
 		double turn = Math.tan(steering2) * distance2 / length;
-		System.out.println("turn -> " + turn);
+
 		if (Math.abs(turn) < straight_line_tolerance) {
-			System.out.println("straight line");
 			x = x + (distance * Math.cos(heading));
 			y = y + (distance * Math.sin(heading));
 			heading = (heading + turn) %  (2.0 * Math.PI);
@@ -50,13 +47,10 @@ public class CycleRobot extends AbstractRobot{
 
 			double radius = distance2 / turn;
 			double cx = x - (Math.sin(heading) * radius);
-			double cy = y - (Math.cos(heading) * radius);
+			double cy = y + (Math.cos(heading) * radius);
 			heading = (heading + turn) %  (2.0 * Math.PI);
 			x = cx + (Math.sin(heading)* radius);
-			y = cy + (Math.cos(heading)* radius);
-
-			System.out.println("bycicle model -> " + heading + " x: " + x + " y: " + y);
-
+			y = cy - (Math.cos(heading)* radius);
 		}
 	}
 

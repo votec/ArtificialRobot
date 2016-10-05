@@ -4,17 +4,29 @@ package gui;
 import java.util.concurrent.CountDownLatch;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class Window extends Application {
 	public static final CountDownLatch latch = new CountDownLatch(1);
 	public static Window window = null;
 	private GraphicsContext gc;
+
+
+	@FXML
+	public void exitApplication(ActionEvent event) {
+	   Platform.exit();
+
+	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -31,6 +43,13 @@ public class Window extends Application {
         stage.setScene(scene);
         stage.show();
 
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
         setStartUpTest(this);
 
 	}
@@ -50,10 +69,6 @@ public class Window extends Application {
     }
 
 
-
-    public void printSomething() {
-        System.out.println("You called a method on the application");
-    }
 
 	public GraphicsContext getContext(){
 		return gc;

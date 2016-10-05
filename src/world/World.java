@@ -12,6 +12,4 @@ public class World {
 		public static int[] start = {0,0};
 
 		public static int[] goal = {grid.length -1, grid[0].length -1};
-
-
 }

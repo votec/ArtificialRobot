@@ -6,9 +6,9 @@ import javafx.scene.paint.Color;
 
 public class DrawGrid {
 
-	private static final int SIZE_CIRCLE = 40;
-	private static final int OFFSET = 40;
-	private static final int OFFSET_MID = 60;
+	private static final double SIZE_CIRCLE = 40;
+	private static final double OFFSET = 40;
+	private static final double OFFSET_MID = 60;
 	private GraphicsContext gc;
 
 	public DrawGrid(GraphicsContext gc ) {
@@ -57,7 +57,7 @@ public class DrawGrid {
 
 	public void drawRobot(double x, double y) {
 		gc.setFill(Color.RED);
-		gc.fillOval(-1*y*SIZE_CIRCLE + OFFSET_MID, x*SIZE_CIRCLE +OFFSET_MID, 3, 3);
+		gc.fillOval(y*SIZE_CIRCLE + OFFSET_MID, x*SIZE_CIRCLE +OFFSET_MID, 3, 3);
 	}
 
 }

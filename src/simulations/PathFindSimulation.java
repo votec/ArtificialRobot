@@ -15,14 +15,13 @@ import world.World;
 
 public class PathFindSimulation {
 
-
-	protected static final double turning_noise = 0.1;
-	protected static final double distance_noise = 0.03;
-	protected static final double measurement_noise = 0.2;
-	protected static final double speed = 0.05;
-	protected static final int timeout = 1000;
-	protected static final double p_gain = 1.5;
-	protected static final double d_gain = 4.0;
+	protected static final double turning_noise = 0.0;
+	protected static final double distance_noise = 0.0;
+	protected static final double measurement_noise = 0.0;
+	protected static final double speed = 0.1;
+	protected static final int timeout = 5000;
+	protected static final double p_gain = 1.8;
+	protected static final double d_gain = 5.7;
 	private DrawGrid drawing;
 
 	public PathFindSimulation(Window window) throws InterruptedException, ExecutionException {
@@ -30,7 +29,6 @@ public class PathFindSimulation {
 		this.drawing = new DrawGrid(window.getContext().getCanvas().getGraphicsContext2D());
 		List<double[]> path = runPlanning();
 		runSimulation(path);
-
 	}
 
 	/**
@@ -108,32 +106,25 @@ public class PathFindSimulation {
 					estimate_position = new double[]{r.getX(), r.getY()};
 				}
 
-
 	    		double[] path_pos = path.get(index);
 	    		double[] next_path_pos = path.get(index+1);
-	    		System.out.println("PATH POS: " + path_pos[0] + " , " + path_pos[1] + " NEXT PATH POS-> " + next_path_pos[0] + " ," +  next_path_pos[1]);
-	    		double u = (estimate_position[0] - path_pos[0]) * (next_path_pos[0] - path_pos[0])  + (estimate_position[1] - path_pos[1]) * (next_path_pos[1] - path_pos[1]) ;
-	    		u /= Math.pow((next_path_pos[0] - path_pos[0]), 2) + Math.pow((next_path_pos[1] - path_pos[1]), 2);
 
-	    		cte = (estimate_position[1] - path_pos[1]) * (next_path_pos[0] - path_pos[0]) - (estimate_position[0] - path_pos[0])* (next_path_pos[1] - path_pos[1]);
-	    		cte /= Math.pow((next_path_pos[0] - path_pos[0]), 2) + Math.pow((next_path_pos[1] - path_pos[1]), 2);
+	    		double dx = next_path_pos[0] - path_pos[0];
+	    		double dy = next_path_pos[1] - path_pos[1];
 
-	    		if ((u > 1) && (index<path.size()-1)){
+	    		double rx = estimate_position[0] - path_pos[0];
+	    		double ry = estimate_position[1] - path_pos[1];
+
+	    		double u = (rx * dx + ry * dy) / (dx * dx + dy * dy);
+	    		cte = (ry * dx - rx * dy) / (dx * dx + dy *dy);
+
+	    		if (u > 1.0 && (index<path.size()-1)){
 					index++;
 				}
 
-
-
-
-
 	    		diff_cte += cte;
 
-	    		System.out.println("diff cte-> "+ diff_cte + " cte -> " + cte );
-
 	    		double steer = -p_gain * cte - d_gain * diff_cte;
-
-	    		System.out.println("steering angle ->   " + steer * 180 / Math.PI );
-
 	    		/**
 	    		 * move robot & particles
 	    		 */
@@ -157,10 +148,8 @@ public class PathFindSimulation {
 	    		System.out.println("err: " + err +  "  cte: "+ cte +"  index: "+ index + " u:  " + u + " collisions: " + r.getCollisions());
 	    		Thread.sleep(20);
 			}
-
 			return 0;
 	    }
-
 
 		};
 		new Thread(simulation).start();

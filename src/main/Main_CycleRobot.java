@@ -23,7 +23,6 @@ public class Main_CycleRobot {
 	            }
 	    }.start();
 
-
 	    Window window = Window.waitForStartUpTest();
 		new PathFindSimulation(window);
 
