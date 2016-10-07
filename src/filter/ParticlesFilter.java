@@ -76,4 +76,8 @@ public class ParticlesFilter {
 		}
 	}
 
+	public List<CycleRobot> getParticles() {
+		return filter;
+	}
+
 }
