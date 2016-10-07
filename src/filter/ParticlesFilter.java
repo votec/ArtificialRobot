@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import robot.CycleRobot;
+import world.World;
 
 public class ParticlesFilter {
 
@@ -23,11 +24,15 @@ public class ParticlesFilter {
 	public ParticlesFilter(double x, double y, double heading,
 			double turningNoise, double distanceNoise, double measurementNoise) {
 
+		filter.clear();
 		for (int i = 0; i < FILTERSIZE; i++) {
-			CycleRobot partical = new CycleRobot(x, y, heading);
+			System.out.println(World.grid.length * Math.random()+ " , " +  World.grid[0].length * Math.random());
+			CycleRobot partical = new CycleRobot(World.grid.length * Math.random(), World.grid[0].length * Math.random(),  Math.random() * 2.0 * Math.PI);
 			partical.setNoise(turningNoise, distanceNoise, measurementNoise);
 			filter.add(partical);
+
 		}
+
 	}
 
 	public double[] getPosition() {
@@ -40,30 +45,34 @@ public class ParticlesFilter {
 			y += particle.getY();
 			heading += ((particle.getHeading() - filter.get(0).getHeading() + Math.PI) % (2.0 * Math.PI)) + (filter.get(0).getHeading() -Math.PI);
 		}
-		return new double[]{x / FILTERSIZE , y / FILTERSIZE , heading/ FILTERSIZE};
+
+		double[] position = new double[]{x / FILTERSIZE , y / FILTERSIZE , heading/ FILTERSIZE};
+
+		return position;
 	}
 
 
 	public void sense(double[] z) {
 
-		List<Double> errors = new ArrayList<Double>();
+		List<Double> probability = new ArrayList<Double>();
 		List<CycleRobot> seedingList = new ArrayList<CycleRobot>();
 
 		for (CycleRobot particle : filter) {
-			double error = particle.measurementProb(z);
-			errors.add(error);
+			double prob = particle.measurementProb(z);
+			probability.add(prob);
 		}
 
 		int index = (int) (Math.random() * FILTERSIZE);
 		double beta = 0.0;
-		double mw = Collections.max(errors);
+		double mw = Collections.max(probability);
 
 		for (int i = 0; i < FILTERSIZE; i++) {
 			beta += (Math.random() * 2.0 * mw);
-			while (beta > errors.get(index)) {
-				beta -= errors.get(index);
+			while (beta > probability.get(index)) {
+				beta -= probability.get(index);
 				index = (index + 1) % FILTERSIZE;
 			}
+
 			seedingList.add(filter.get(index));
 		}
 

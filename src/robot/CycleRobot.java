@@ -86,13 +86,14 @@ public class CycleRobot extends AbstractRobot{
 
 	public double measurementProb(double[] measurement){
 
-		double errorX = measurement[0] - x;
-		double errorY = measurement[1] - y;
+		double prob = 1.0;
 
-		double error = Math.exp(-1* (errorX * errorX) / (measurement_noise * measurement_noise) / 2 / Math.sqrt(2.0 * Math.PI * (measurement_noise * measurement_noise)) );
-		error *= Math.exp(-1* (errorY * errorY) / (measurement_noise * measurement_noise) / 2 / Math.sqrt(2.0 * Math.PI * (measurement_noise * measurement_noise)) );
+        prob *= Gaussian(x, measurement_noise, measurement[0]);
+        prob *= Gaussian(y, measurement_noise, measurement[1]);
 
-		return error;
+        return prob;
+
+
 	}
 
 }

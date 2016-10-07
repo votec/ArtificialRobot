@@ -76,8 +76,9 @@ public class AbstractRobot {
 	}
 
 	public double[] sense(){
-		// add gaussian measurement noise to location
-		return new double[]{new Random().nextGaussian() * measurement_noise + x , new Random().nextGaussian() * measurement_noise + y};
+		double[] loc =new double[]{new Random().nextGaussian() * measurement_noise + x , new Random().nextGaussian() * measurement_noise + y};
+
+		return loc;
 	}
 
 	public double getDistance() {
@@ -95,5 +96,9 @@ public class AbstractRobot {
 	public double getHeading() {
 		return heading;
 	}
+
+	public static double Gaussian(double mu, double sigma, double x) {
+        return Math.exp(-(Math.pow(mu - x, 2)) / Math.pow(sigma, 2) / 2.0) / Math.sqrt(2.0 * Math.PI * Math.pow(sigma, 2));
+}
 
 }

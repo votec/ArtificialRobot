@@ -23,8 +23,17 @@ public class DrawParticles {
         gc.setStroke(Color.BLUE);
 
         for (CycleRobot r : particles) {
+        	System.out.println("draw x: " + r.getY()*SIZE_CIRCLE + OFFSET);
+        	System.out.println("draw y: " + r.getX()*SIZE_CIRCLE + OFFSET);
         	gc.fillOval(r.getY()*SIZE_CIRCLE + OFFSET, r.getX()*SIZE_CIRCLE +OFFSET, SIZE_PARTICLE, SIZE_PARTICLE);
 		}
+
+		System.out.println("---------------------------------------------");
+
+	}
+
+	public void clear() {
+		gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
 	}
 

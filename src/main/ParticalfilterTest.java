@@ -1,6 +1,5 @@
 package main;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import robot.CycleRobot;
@@ -30,13 +29,15 @@ public class ParticalfilterTest {
 
     Window window = Window.waitForStartUpTest();
 
-    drawing = new DrawGrid(window.getContext().getCanvas().getGraphicsContext2D());
+    //drawing = new DrawGrid(window.getContext().getCanvas().getGraphicsContext2D());
 
     new ParticalfilterTest().drawGrid();
 
     filter = new ParticlesFilter(0, 0, 0, turning_noise, distance_noise, measurement_noise);
 
     DrawParticles gui = new DrawParticles(window.getContext().getCanvas().getGraphicsContext2D() );
+
+    gui.drawParticles(filter.getParticles());
 
     startTest(filter , gui);
 
@@ -48,10 +49,10 @@ public class ParticalfilterTest {
 		CycleRobot r = new CycleRobot(0, 0, 0);
 		r.setNoise(turning_noise, distance_noise, measurement_noise);
 
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 
-		r.move(0, 0.1);
-		filter.move(0,0.1);
+		r.move(0.05, 0.1);
+		filter.move(0.05,0.1);
 
 		/**
 		 * Correct particles
@@ -60,12 +61,12 @@ public class ParticalfilterTest {
 		filter.sense(Z);
 		gui.drawParticles(filter.getParticles());
 
-		System.out.println(filter.getParticles().size());
 
-		drawing.drawRobot(r.getX(),r.getY());
+		//drawing.drawRobot(r.getX(),r.getY());
+		//drawing.drawRobot(filter.getPosition()[0],filter.getPosition()[1]);
+		Thread.sleep(2000);
 
-		Thread.sleep(300);
-
+		gui.clear();
 		}
 	}
 
